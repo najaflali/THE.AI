@@ -1,172 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Calculator Website</title>
-  <style>
-    /* General Styles */
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f9;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+  /* Animated Background */
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
-    /* Header Styles */
-    header {
-      background-color: #2c3e50;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+  /* Chatbot Container */
+  #chatbot {
+    width: 400px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 1s ease-in-out;
+  }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5em;
-    }
+  /* Messages Container */
+  #messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.8);
+  }
 
-    /* Navigation Styles */
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: #34495e;
-      padding: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+  /* Individual Messages */
+  .message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: slideIn 0.3s ease-out;
+  }
 
-    nav a {
-      margin: 0 15px;
-      padding: 10px 20px;
-      color: #fff;
-      font-size: 1.1em;
-      transition: background-color 0.3s, transform 0.3s;
-      border-radius: 5px;
-    }
+  .user-message {
+    background: #007bff;
+    color: white;
+    align-self: flex-end;
+  }
 
-    nav a:hover {
-      background-color: #1abc9c;
-      transform: translateY(-3px);
-    }
+  .bot-message {
+    background: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
+  }
 
-    /* Main Content Styles */
-    main {
-      padding: 20px;
-      text-align: center;
-    }
+  /* Input Form */
+  #form {
+    display: flex;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+  }
 
-    .intro {
-      margin-bottom: 40px;
-    }
+  #input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-right: 10px;
+    font-size: 14px;
+    outline: none;
+  }
 
-    .intro h2 {
-      font-size: 2em;
-      color: #2c3e50;
-    }
+  button {
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+  }
 
-    .intro p {
-      font-size: 1.2em;
-      color: #666;
-    }
+  button:hover {
+    background: #0056b3;
+  }
 
-    .calculator-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-    .calculator-card {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .calculator-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .calculator-card h3 {
-      font-size: 1.5em;
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-
-    .calculator-card p {
-      font-size: 1em;
-      color: #666;
-    }
-
-    /* Footer Styles */
-    footer {
-      background-color: #2c3e50;
-      color: #fff;
-      text-align: center;
-      padding: 15px;
-      margin-top: 40px;
-      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    footer p {
-      margin: 0;
-      font-size: 0.9em;
-    }
-  </style>
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <h1>My Calculator Website</h1>
-  </header>
 
-  <!-- Navigation -->
-  <nav>
-    <a href="agecalculator.html">Age Calculator</a>
-    <a href="bmicalculator.html">BMI Calculator</a>
-    <a href="scientificcalculator.html">Scientific Calculator</a>
-  </nav>
+<div id="chatbot">
+  <div id="messages"></div>
+  <form id="form">
+    <input id="input" type="text" placeholder="Type a message..." autocomplete="off" />
+    <button type="submit">Send</button>
+  </form>
+</div>
 
-  <!-- Main Content -->
-  <main>
-    <div class="intro">
-      <h2>Welcome to My Calculator Website</h2>
-      <p>Explore a variety of calculators and tools to simplify your daily calculations.</p>
-    </div>
+<script>
+document.getElementById('form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const input = document.getElementById('input');
+  const messagesDiv = document.getElementById('messages');
+  
+  // Display user message
+  messagesDiv.innerHTML += `<div><strong>You:</strong> ${input.value}</div>`;
+  
+  // Call the API
+  fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer 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",
+      "HTTP-Referer": "https://yourblog.com", // Update this to your actual site URL
+      "X-Title": "Your Site Name", // Update this to your actual site name
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      "model": "qwen/qwen-vl-plus:free",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": input.value
+            }
+          ]
+        }
+      ]
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Display bot response
+    messagesDiv.innerHTML += `<div><strong>Bot:</strong> ${data.choices[0].message.content}</div>`;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 
-    <div class="calculator-grid">
-      <div class="calculator-card">
-        <h3>Age Calculator</h3>
-        <p>Calculate your age in years, months, and days.</p>
-        <a href="agecalculator.html">Go to Age Calculator</a>
-      </div>
+  // Clear input
+  input.value = '';
+});
+</script>
 
-      <div class="calculator-card">
-        <h3>BMI Calculator</h3>
-        <p>Calculate your Body Mass Index (BMI) and understand your weight status.</p>
-        <a href="bmicalculator.html">Go to BMI Calculator</a>
-      </div>
-
-      <div class="calculator-card">
-        <h3>Scientific Calculator</h3>
-        <p>Perform advanced calculations with trigonometric, logarithmic, and exponential functions.</p>
-        <a href="scientificcalculator.html">Go to Scientific Calculator</a>
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2023 My Calculator Website. All rights reserved.</p>
-  </footer>
 </body>
 </html>
