@@ -7,20 +7,22 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #f4f4f9;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
+
     .calculator {
       background-color: #2c3e50;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       padding: 20px;
-      width: 300px;
+      width: 320px;
     }
+
     .display {
       background-color: #34495e;
       color: #fff;
@@ -30,33 +32,40 @@
       border-radius: 5px;
       margin-bottom: 10px;
     }
+
     .buttons {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
     }
+
     .buttons button {
       background-color: #34495e;
       color: #fff;
-      font-size: 1.2em;
-      padding: 20px;
+      font-size: 1em;
+      padding: 15px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
     }
+
     .buttons button:hover {
       background-color: #1abc9c;
     }
+
     .buttons button.operator {
       background-color: #e67e22;
     }
+
     .buttons button.operator:hover {
       background-color: #d35400;
     }
+
     .buttons button.clear {
       background-color: #e74c3c;
     }
+
     .buttons button.clear:hover {
       background-color: #c0392b;
     }
@@ -64,32 +73,79 @@
 </head>
 <body>
   <div class="calculator">
+    <!-- Display -->
     <div class="display" id="display">0</div>
+
+    <!-- Buttons -->
     <div class="buttons">
-      <button onclick="clearDisplay()" class="clear">AC</button>
-      <button onclick="backspace()">Back</button>
-      <button onclick="appendOperator('%')" class="operator">%</button>
-      <button onclick="appendOperator('/')" class="operator">÷</button>
+      <!-- Row 1 -->
+      <button onclick="calculateFunction('sin')">sin</button>
+      <button onclick="calculateFunction('cos')">cos</button>
+      <button onclick="calculateFunction('tan')">tan</button>
+      <button onclick="toggleDegRad()" id="degRad">Deg</button>
+      <button onclick="calculateFunction('sin-1')">sin<sup>-1</sup></button>
+
+      <!-- Row 2 -->
+      <button onclick="calculateFunction('cos-1')">cos<sup>-1</sup></button>
+      <button onclick="calculateFunction('tan-1')">tan<sup>-1</sup></button>
+      <button onclick="appendConstant('π')">π</button>
+      <button onclick="appendConstant('e')">e</button>
+      <button onclick="calculateFunction('xy')">x<sup>y</sup></button>
+
+      <!-- Row 3 -->
+      <button onclick="calculateFunction('x3')">x<sup>3</sup></button>
+      <button onclick="calculateFunction('x2')">x<sup>2</sup></button>
+      <button onclick="calculateFunction('ex')">e<sup>x</sup></button>
+      <button onclick="calculateFunction('10x')">10<sup>x</sup></button>
+      <button onclick="calculateFunction('y√x')"><sup>y</sup>√x</button>
+
+      <!-- Row 4 -->
+      <button onclick="calculateFunction('3√x')"><sup>3</sup>√x</button>
+      <button onclick="calculateFunction('√x')">√x</button>
+      <button onclick="calculateFunction('ln')">ln</button>
+      <button onclick="calculateFunction('log')">log</button>
+      <button onclick="appendOperator('(')">(</button>
+
+      <!-- Row 5 -->
+      <button onclick="appendOperator(')')">)</button>
+      <button onclick="calculateFunction('1/x')">1/x</button>
+      <button onclick="appendOperator('%')">%</button>
+      <button onclick="calculateFunction('n!')">n!</button>
       <button onclick="appendNumber(7)">7</button>
+
+      <!-- Row 6 -->
       <button onclick="appendNumber(8)">8</button>
       <button onclick="appendNumber(9)">9</button>
-      <button onclick="appendOperator('*')" class="operator">×</button>
+      <button onclick="appendOperator('+')" class="operator">+</button>
+      <button onclick="backspace()">Back</button>
       <button onclick="appendNumber(4)">4</button>
+
+      <!-- Row 7 -->
       <button onclick="appendNumber(5)">5</button>
       <button onclick="appendNumber(6)">6</button>
       <button onclick="appendOperator('-')" class="operator">–</button>
+      <button onclick="memoryRecall()">Ans</button>
       <button onclick="appendNumber(1)">1</button>
+
+      <!-- Row 8 -->
       <button onclick="appendNumber(2)">2</button>
       <button onclick="appendNumber(3)">3</button>
-      <button onclick="appendOperator('+')" class="operator">+</button>
+      <button onclick="appendOperator('*')" class="operator">×</button>
+      <button onclick="memoryAdd()">M+</button>
       <button onclick="appendNumber(0)">0</button>
+
+      <!-- Row 9 -->
       <button onclick="appendNumber('.')">.</button>
+      <button onclick="appendOperator('EXP')">EXP</button>
+      <button onclick="appendOperator('/')" class="operator">÷</button>
+      <button onclick="memorySubtract()">M-</button>
+      <button onclick="toggleSign()">±</button>
+
+      <!-- Row 10 -->
+      <button onclick="appendOperator('RND')">RND</button>
+      <button onclick="clearDisplay()" class="clear">AC</button>
       <button onclick="calculate()" class="operator">=</button>
       <button onclick="memoryRecall()">MR</button>
-      <button onclick="memoryAdd()">M+</button>
-      <button onclick="memorySubtract()">M-</button>
-      <button onclick="appendOperator('sqrt')" class="operator">√</button>
-      <button onclick="appendOperator('^')" class="operator">^</button>
     </div>
   </div>
 
@@ -99,13 +155,16 @@
     let currentInput = '';
     let operator = null;
     let previousInput = '';
+    let isDeg = true; // Degrees mode by default
 
+    // Append a number or decimal point
     function appendNumber(number) {
       if (currentInput.includes('.') && number === '.') return;
       currentInput += number;
       updateDisplay();
     }
 
+    // Append an operator
     function appendOperator(op) {
       if (currentInput === '') return;
       if (previousInput !== '') calculate();
@@ -114,6 +173,7 @@
       currentInput = '';
     }
 
+    // Perform calculation
     function calculate() {
       if (operator === null || currentInput === '') return;
       let result;
@@ -139,8 +199,14 @@
         case '^':
           result = Math.pow(prev, current);
           break;
-        case 'sqrt':
+        case '√x':
           result = Math.sqrt(current);
+          break;
+        case '1/x':
+          result = 1 / current;
+          break;
+        case 'n!':
+          result = factorial(current);
           break;
         default:
           return;
@@ -152,6 +218,104 @@
       updateDisplay();
     }
 
+    // Calculate advanced functions
+    function calculateFunction(func) {
+      const input = parseFloat(currentInput || '0');
+      let result;
+
+      switch (func) {
+        case 'sin':
+          result = isDeg ? Math.sin((input * Math.PI) / 180) : Math.sin(input);
+          break;
+        case 'cos':
+          result = isDeg ? Math.cos((input * Math.PI) / 180) : Math.cos(input);
+          break;
+        case 'tan':
+          result = isDeg ? Math.tan((input * Math.PI) / 180) : Math.tan(input);
+          break;
+        case 'sin-1':
+          result = isDeg ? (Math.asin(input) * (180 / Math.PI)) : Math.asin(input);
+          break;
+        case 'cos-1':
+          result = isDeg ? (Math.acos(input) * (180 / Math.PI)) : Math.acos(input);
+          break;
+        case 'tan-1':
+          result = isDeg ? (Math.atan(input) * (180 / Math.PI) : Math.atan(input);
+          break;
+        case 'ln':
+          result = Math.log(input);
+          break;
+        case 'log':
+          result = Math.log10(input);
+          break;
+        case 'ex':
+          result = Math.exp(input);
+          break;
+        case '10x':
+          result = Math.pow(10, input);
+          break;
+        case 'x2':
+          result = Math.pow(input, 2);
+          break;
+        case 'x3':
+          result = Math.pow(input, 3);
+          break;
+        case 'xy':
+          operator = '^';
+          previousInput = currentInput;
+          currentInput = '';
+          return;
+        case 'y√x':
+          operator = 'y√x';
+          previousInput = currentInput;
+          currentInput = '';
+          return;
+        case '3√x':
+          result = Math.cbrt(input);
+          break;
+        case '√x':
+          result = Math.sqrt(input);
+          break;
+        case '1/x':
+          result = 1 / input;
+          break;
+        case 'n!':
+          result = factorial(input);
+          break;
+        default:
+          return;
+      }
+
+      currentInput = result.toString();
+      updateDisplay();
+    }
+
+    // Factorial function
+    function factorial(n) {
+      if (n === 0 || n === 1) return 1;
+      return n * factorial(n - 1);
+    }
+
+    // Append constants (π, e)
+    function appendConstant(constant) {
+      switch (constant) {
+        case 'π':
+          currentInput = Math.PI.toString();
+          break;
+        case 'e':
+          currentInput = Math.E.toString();
+          break;
+      }
+      updateDisplay();
+    }
+
+    // Toggle between degrees and radians
+    function toggleDegRad() {
+      isDeg = !isDeg;
+      document.getElementById('degRad').innerText = isDeg ? 'Deg' : 'Rad';
+    }
+
+    // Clear the display
     function clearDisplay() {
       currentInput = '';
       previousInput = '';
@@ -159,11 +323,21 @@
       updateDisplay();
     }
 
+    // Backspace function
     function backspace() {
       currentInput = currentInput.slice(0, -1);
       updateDisplay();
     }
 
+    // Toggle the sign of the current input
+    function toggleSign() {
+      if (currentInput !== '') {
+        currentInput = (parseFloat(currentInput) * -1).toString();
+        updateDisplay();
+      }
+    }
+
+    // Memory functions
     function memoryAdd() {
       memory += parseFloat(currentInput || '0');
     }
@@ -177,6 +351,7 @@
       updateDisplay();
     }
 
+    // Update the display
     function updateDisplay() {
       display.innerText = currentInput || '0';
     }
