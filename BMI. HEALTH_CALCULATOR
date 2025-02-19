@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 16px;
+      color: #333;
+    }
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      text-align: left;
+      font-size: 16px;
+      color: #333;
+    }
+    #result p {
+      margin: 5px 0;
+    }
+    .bmi-chart {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .bmi-chart h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .bmi-chart .chart {
+      display: flex;
+      justify-content: space-between;
+      background: linear-gradient(to right, #ff9999, #99ff99, #9999ff);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .bmi-chart .chart div {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>BMI Calculator</h1>
+    <div class="input-group">
+      <label for="age">Age:</label>
+      <input type="number" id="age" min="2" max="120" value="25">
+    </div>
+    <div class="input-group">
+      <label for="gender">Gender:</label>
+      <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="height">Height (cm):</label>
+      <input type="number" id="height" min="50" max="300" value="180">
+    </div>
+    <div class="input-group">
+      <label for="weight">Weight (kg):</label>
+      <input type="number" id="weight" min="10" max="500" value="65">
+    </div>
+    <button onclick="calculateBMI()">Calculate BMI</button>
+    <div id="result"></div>
+    <div class="bmi-chart">
+      <h3>BMI Chart</h3>
+      <div class="chart">
+        <div>Underweight<br>&lt; 18.5</div>
+        <div>Normal<br>18.5 - 25</div>
+        <div>Overweight<br>25 - 30</div>
+        <div>Obese<br>&gt; 30</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateBMI() {
+      const age = parseInt(document.getElementById('age').value);
+      const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to m
+      const weight = parseFloat(document.getElementById('weight').value);
+
+      if (isNaN(age) || isNaN(height) || isNaN(weight) || age < 2 || age > 120 || height <= 0 || weight <= 0) {
+        alert("Please enter valid values for age, height, and weight!");
+        return;
+      }
+
+      const bmi = (weight / (height * height)).toFixed(1);
+      const bmiPrime = (bmi / 25).toFixed(2);
+      const ponderalIndex = (weight / (height * height * height)).toFixed(1);
+
+      let category = '';
+      if (bmi < 16) category = 'Severe Thinness';
+      else if (bmi >= 16 && bmi < 17) category = 'Moderate Thinness';
+      else if (bmi >= 17 && bmi < 18.5) category = 'Mild Thinness';
+      else if (bmi >= 18.5 && bmi < 25) category = 'Normal';
+      else if (bmi >= 25 && bmi < 30) category = 'Overweight';
+      else if (bmi >= 30 && bmi < 35) category = 'Obese Class I';
+      else if (bmi >= 35 && bmi < 40) category = 'Obese Class II';
+      else category = 'Obese Class III';
+
+      const healthyWeightMin = (18.5 * height * height).toFixed(1);
+      const healthyWeightMax = (25 * height * height).toFixed(1);
+
+      const result = `
+        <p>BMI = ${bmi} kg/m² (${category})</p>
+        <p>Healthy BMI range: 18.5 kg/m² - 25 kg/m²</p>
+        <p>Healthy weight for the height: ${healthyWeightMin} kg - ${healthyWeightMax} kg</p>
+        <p>BMI Prime: ${bmiPrime}</p>
+        <p>Ponderal Index: ${ponderalIndex} kg/m³</p>
+      `;
+      document.getElementById('result').innerHTML = result;
+    }
+  </script>
+</body>
+</html>
