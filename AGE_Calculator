@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      font-size: 16px;
+      color: #333;
+    }
+    .input-group input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      text-align: left;
+      font-size: 16px;
+      color: #333;
+    }
+    #result p {
+      margin: 5px 0;
+    }
+    .calendar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .calendar div {
+      width: 45%;
+      text-align: left;
+    }
+    .calendar h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Age Calculator</h1>
+    <div class="input-group">
+      <label for="birthdate">Date of Birth:</label>
+      <input type="date" id="birthdate" max="">
+    </div>
+    <div class="input-group">
+      <label for="ageAtDate">Age at the Date of:</label>
+      <input type="date" id="ageAtDate" max="">
+    </div>
+    <button onclick="calculateAge()">Calculate Age</button>
+    <button onclick="saveCalculation()">Save this calculation</button>
+    <div id="result"></div>
+    <div class="calendar">
+      <div>
+        <h3>Date of Birth</h3>
+        <div id="birthdateCalendar"></div>
+      </div>
+      <div>
+        <h3>Age at the Date of</h3>
+        <div id="ageAtDateCalendar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set max date to today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('birthdate').setAttribute('max', today);
+    document.getElementById('ageAtDate').setAttribute('max', today);
+
+    function calculateAge() {
+      const birthdate = document.getElementById('birthdate').value;
+      const ageAtDate = document.getElementById('ageAtDate').value;
+
+      if (!birthdate || !ageAtDate) {
+        alert("Please enter both dates!");
+        return;
+      }
+
+      const birthDate = new Date(birthdate);
+      const targetDate = new Date(ageAtDate);
+
+      if (targetDate < birthDate) {
+        alert("The 'Age at the Date of' must be after the 'Date of Birth'!");
+        return;
+      }
+
+      let years = targetDate.getFullYear() - birthDate.getFullYear();
+      let months = targetDate.getMonth() - birthDate.getMonth();
+      let days = targetDate.getDate() - birthDate.getDate();
+
+      if (days < 0) {
+        months--;
+        days += new Date(targetDate.getFullYear(), targetDate.getMonth(), 0).getDate();
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      // Calculate total days, hours, minutes, and seconds
+      const timeDiff = targetDate - birthDate;
+      const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const totalHours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const totalMinutes = Math.floor(timeDiff / (1000 * 60));
+      const totalSeconds = Math.floor(timeDiff / 1000);
+
+      // Display result
+      const result = `
+        <p>Age: ${years} years ${months} months ${days} days</p>
+        <p>or ${years * 12 + months} months ${days} days</p>
+        <p>or ${Math.floor(totalDays / 7)} weeks ${totalDays % 7} days</p>
+        <p>or ${totalDays} days</p>
+        <p>or ${totalHours} hours</p>
+        <p>or ${totalMinutes} minutes</p>
+        <p>or ${totalSeconds} seconds</p>
+      `;
+      document.getElementById('result').innerHTML = result;
+
+      // Display calendars
+      displayCalendar(birthDate, 'birthdateCalendar');
+      displayCalendar(targetDate, 'ageAtDateCalendar');
+    }
+
+    function displayCalendar(date, elementId) {
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const month = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+      const firstDay = new Date(year, date.getMonth(), 1);
+      const lastDay = new Date(year, date.getMonth() + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startingDay = firstDay.getDay();
+
+      let calendarHTML = `<h4>${month} ${year}</h4>`;
+      calendarHTML += `<table><tr><th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th></tr><tr>`;
+
+      for (let i = 0; i < startingDay; i++) {
+        calendarHTML += `<td></td>`;
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        if ((day + startingDay - 1) % 7 === 0 && day !== 1) {
+          calendarHTML += `</tr><tr>`;
+        }
+        calendarHTML += `<td>${day}</td>`;
+      }
+
+      calendarHTML += `</tr></table>`;
+      document.getElementById(elementId).innerHTML = calendarHTML;
+    }
+
+    function saveCalculation() {
+      alert("Save functionality can be implemented here!");
+    }
+  </script>
+</body>
+</html>
