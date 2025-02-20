@@ -17,6 +17,31 @@
       height: 100%;
       font-family: 'Roboto', sans-serif;
     }
+    /* Navigator Styles */
+    nav.navigator {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+    nav.navigator ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+    nav.navigator ul li a {
+      text-decoration: none;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      font-weight: bold;
+    }
+    nav.navigator ul li a:hover {
+      background-color: #E6E6FA;
+      color: #333;
+    }
     /* Hero Section with School Image */
     .hero {
       position: relative;
@@ -76,14 +101,29 @@
   </style>
 </head>
 <body>
-  <section class="hero">
+  <!-- Navigator -->
+  <nav class="navigator">
+    <ul>
+      <li><a href="#calculator">Calculator</a></li>
+      <li><a href="#chatbot">CHATBOT</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section for CHATBOT -->
+  <section class="hero" id="chatbot">
     <div class="overlay"></div>
     <div class="content">
-      <!-- Placeholder logo; replace with your actual logo URL -->
-      <img class="logo" src="https://github.com/najaflali/THE.AI/raw/main/assets/LOGO.png" />
+      <!-- Actual logo from your repository -->
+      <img class="logo" src="https://github.com/najaflali/THE.AI/raw/main/assets/LOGO.png" alt="GBHSS_SANN Logo" />
       <h1>Government Boys Higher School Sann</h1>
       <p>(GBHSS_SANN)</p>
     </div>
+  </section>
+
+  <!-- Placeholder Section for Calculator -->
+  <section id="calculator" style="padding: 50px; text-align: center; background: #fff;">
+    <h2 style="font-size: 2rem; color: #333;">Calculator (Coming Soon)</h2>
+    <p style="color: #666;">This section will feature a calculator tool for school-related computations.</p>
   </section>
 </body>
 </html>
