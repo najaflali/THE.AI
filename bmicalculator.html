@@ -5,78 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BMI Calculator</title>
   <style>
-    /* Global Reset */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body, html {
-      height: 100%;
-      font-family: 'Roboto', sans-serif;
-    }
-    /* Hero Section with Gradient Background */
-    .hero {
-      position: relative;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
-      width: 100%;
-      background: linear-gradient(135deg, #4b6cb7, #182848);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      margin: 0;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      color: #fff;
-      padding: 0 20px;
+      max-width: 600px;
+      width: 100%;
     }
-    .hero h1 {
-      font-size: 3rem;
+    h1 {
       margin-bottom: 20px;
-      animation: fadeInDown 1s ease-out;
+      color: #333;
     }
-    .hero p {
-      font-size: 1.5rem;
-      margin-bottom: 40px;
-      animation: fadeInUp 1s ease-out;
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
     }
-    /* Container for the three buttons */
-    .button-container {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 16px;
+      color: #333;
     }
-    /* Calculator Buttons */
-    .calc-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 15px 30px;
-      font-size: 1.2rem;
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
       color: #fff;
-      background: #ff6f61;
       border: none;
-      border-radius: 50px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-      text-decoration: none;
+      margin-bottom: 20px;
     }
-    .calc-btn:hover {
-      transform: scale(1.05);
-      background-color: #ff8a75;
-      animation: fireGlow 0.5s infinite alternate;
+    button:hover {
+      background-color: #0056b3;
     }
-    @keyframes fireGlow {
-      from { box-shadow: 0 0 20px rgba(255, 150, 0, 0.8); }
-      to { box-shadow: 0 0 30px rgba(255, 50, 0, 1); }
+    #result {
+      text-align: left;
+      font-size: 16px;
+      color: #333;
     }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+    #result p {
+      margin: 5px 0;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .bmi-chart {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .bmi-chart h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .bmi-chart .chart {
+      display: flex;
+      justify-content: space-between;
+      background: linear-gradient(to right, #ff9999, #99ff99, #9999ff);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .bmi-chart .chart div {
+      text-align: center;
     }
   </style>
 </head>
