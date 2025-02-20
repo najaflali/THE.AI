@@ -4,11 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chatbot</title>
-  <!-- Google Fonts for a professional look -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Botpress Webchat Scripts -->
-  <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-  <script src="https://files.bpcontent.cloud/2025/02/19/08/20250219080757-CK4SIFRC.js"></script>
+ 
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -24,16 +21,14 @@
       overflow: hidden;
       position: relative;
     }
-    /* Animated Background */
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    /* Background Welcome Text as a Watermark */
     .bg-welcome {
       position: absolute;
-      top: 30%;  /* Moved further up */
+      top: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 2.5rem;
@@ -43,7 +38,6 @@
       white-space: nowrap;
       z-index: 0;
     }
-    /* Chatbot Container */
     #chatbot {
       width: 400px;
       background: rgba(255, 255, 255, 0.9);
@@ -55,9 +49,8 @@
       flex-direction: column;
       animation: fadeIn 1s ease-in-out;
       position: relative;
-      z-index: 1; /* Ensure chatbot is above background text */
+      z-index: 1;
     }
-    /* New Header inside Chatbot Container */
     .chat-container-header {
       padding: 10px;
       text-align: center;
@@ -66,7 +59,6 @@
       background: rgba(0, 0, 0, 0.05);
       border-bottom: 1px solid rgba(0,0,0,0.1);
     }
-    /* Messages Container */
     #messages {
       flex: 1;
       padding: 20px;
@@ -74,26 +66,21 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       background: rgba(255, 255, 255, 0.8);
     }
-    /* Individual Messages */
     .message {
       margin-bottom: 15px;
       padding: 10px 15px;
       border-radius: 10px;
       max-width: 80%;
       word-wrap: break-word;
-      animation: slideIn 0.3s ease-out;
     }
     .user-message {
       background: #007bff;
       color: white;
-      align-self: flex-end;
     }
     .bot-message {
       background: #f1f1f1;
       color: #333;
-      align-self: flex-start;
     }
-    /* Input Form */
     #form {
       display: flex;
       padding: 10px;
@@ -116,31 +103,14 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <!-- Background Welcome Text -->
   <div class="bg-welcome">Welcome to School Assistant AI Chatbot!</div>
   <div id="chatbot">
-    <!-- Chatbot Container Header -->
     <div class="chat-container-header">THE AI CHATBOT</div>
-    <div id="messages">
-      <!-- (Messages will appear here) -->
-    </div>
+    <div id="messages"></div>
     <form id="form">
       <input id="input" type="text" placeholder="Type a message..." autocomplete="off" />
       <button type="submit">Send</button>
@@ -151,47 +121,27 @@
       event.preventDefault();
       const input = document.getElementById('input');
       const messagesDiv = document.getElementById('messages');
-      
-      // Display user message
       messagesDiv.innerHTML += `<div class="message user-message"><strong>You:</strong> ${input.value}</div>`;
-      
-      // Call the API
       fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": "Bearer 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",
-          "HTTP-Referer": "https://yourblog.com", // Update to your actual site URL
-          "X-Title": "Your Site Name", // Update to your actual site name
+          "Authorization": "Bearer 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",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           "model": "qwen/qwen-vl-plus:free",
-          "messages": [
-            {
-              "role": "user",
-              "content": [
-                {
-                  "type": "text",
-                  "text": input.value
-                }
-              ]
-            }
-          ]
+          "messages": [{ "role": "user", "content": [{ "type": "text", "text": input.value }] }]
         })
       })
       .then(response => response.json())
       .then(data => {
-        // Display bot response
         messagesDiv.innerHTML += `<div class="message bot-message"><strong>Bot:</strong> ${data.choices[0].message.content}</div>`;
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
       })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-      
-      // Clear input
+      .catch(error => console.error('Error:', error));
       input.value = '';
     });
   </script>
+  <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/02/17/13/20250217131322-LOJ0JLJZ.js"></script>
 </body>
 </html>
