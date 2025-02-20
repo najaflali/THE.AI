@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Powered Calculator Landing</title>
+  <!-- Google Fonts for a professional look -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Global Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+    }
+    /* Hero Section with Gradient Background */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      animation: fadeInDown 1s ease-out;
+    }
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      animation: fadeInUp 1s ease-out;
+    }
+    /* Container for the three buttons */
+    .button-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* Calculator Buttons */
+    .calc-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: #fff;
+      background: #ff6f61;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      text-decoration: none;
+    }
+    .calc-btn:hover {
+      transform: scale(1.05);
+      background-color: #ff8a75;
+      animation: fireGlow 0.5s infinite alternate;
+    }
+    @keyframes fireGlow {
+      from { box-shadow: 0 0 20px rgba(255, 150, 0, 0.8); }
+      to { box-shadow: 0 0 30px rgba(255, 50, 0, 1); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <!-- Optional Calculator Icon -->
+    <i class="fas fa-calculator" style="font-size: 4rem; margin-bottom: 20px; animation: fadeInDown 1s ease-out;"></i>
+    <h1>AI Powered Calculator</h1>
+    <p>Experience next-level computations with our intelligent tools.</p>
+    <div class="button-container">
+      <a href="bmi_calculator.html" class="calc-btn">
+        <i class="fas fa-heartbeat"></i> BMI Calculator
+      </a>
+      <a href="age_calculator.html" class="calc-btn">
+        <i class="fas fa-user-clock"></i> Age Calculator
+      </a>
+      <a href="scientific_calculator.html" class="calc-btn">
+        <i class="fas fa-flask"></i> Scientific Calculator
+      </a>
+    </div>
+  </section>
+</body>
+</html>
