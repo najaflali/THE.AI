@@ -1,1 +1,1 @@
-# https://raw.githubusercontent.com/najaflali/THE.AI/main/assets/TH_AI_2.5.zip
+# https://najaflali.github.io
